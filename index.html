@@ -12,6 +12,7 @@
         <script src="lib/underscore.js" type="text/javascript"></script>
         <script src="lib/bootstrap.min.js" type="text/javascript"></script>
         <script src="lib/angular.min.js" type="text/javascript"></script>
+        <script src="lib/parse-1.1.15.min.js"></script>
 
         <script type="text/javascript">
             var todo = {};
@@ -22,14 +23,16 @@
     <body>
         <div ng-app>
             <div ng-controller = todo.Controller>
-                <h3>Todo: {{getNumDone()}} of {{todoList.length}} items</h3>
-                <input type="text" id="input" placeholder="New Task" ng-model="inputText">
-                <a id="add" class="btn" ng-click="addTodo()" style="display: none;">Add task</a>
-                <div ng-repeat="todo in todoList">
+                <h3>Todo: {{getNumDone()}} of {{taskList.length}} items</h3>
+                <input type="text" id="saveOrLoadInput" placeholder="Save or Load a Task List" ng-model="taskListName">
+                <a id="saveOrLoad" class="btn" ng-click="saveOrLoad()">Enter</a>
+                <br/><input type="text" id="addTaskInput" placeholder="New Task" ng-model="inputText">
+                <a id="addTask" class="btn" ng-click="addTask()">Enter</a>
+                <div ng-repeat="todo in taskList">
                     <input type="checkbox" ng-model="todo.done">
                     <span class="done-{{todo.done}}">{{todo.text}}</span>
                 </div>
-                <br/><a id="archive" class="btn" ng-click="archive()">Archive</a>
+                <br/><a id="archive" class="btn" ng-click="archive(); saveTasks()">Archive</a>
             </div>
         </div>
     </body>  
