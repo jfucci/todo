@@ -30,25 +30,21 @@
 		//save or load a list:
 
 		$scope.saveOrLoad = function() {
-			if(this.taskListName) {
-				query.matches("name", this.taskListName);
-				query.find({
-					success: function(newTaskList) {
-						if(newTaskList.length > 0) {
-							globalTaskList = newTaskList[0];
-							$scope.updateTaskList();
-							$("#addTask").click(); //another ugly hack... (to get the list to update)
-						} else {
-							$scope.saveTasks();
-						}
-					},
-					error: function(error) {
-						console.log("Error: " + error.code + " " + error.message);
+			query.matches("name", this.taskListName);
+			query.find({
+				success: function(newTaskList) {
+					if(newTaskList.length > 0) {
+						globalTaskList = newTaskList[0];
+						$scope.updateTaskList();
+						$("#addTask").click(); //another ugly hack... (to get the list to update)
+					} else {
+						$scope.saveTasks();
 					}
-				});
-			} else {
-				alert("your list must have a name!");
-			}
+				},
+				error: function(error) {
+					console.log("Error: " + error.code + " " + error.message);
+				}
+			});
 		};
 
 		//archive:
@@ -59,7 +55,7 @@
 				$scope.taskList = _.reject($scope.taskList, function(item) {
 					return item.done;
 				});
-				$("#archive").click();	/*weird hack to get the "Todo: # of # items" to 
+				$("#archive").click();	/*weird hack to get the "Todo: # of # items" to
 										update and reflect the new length of the array*/
 			});
 			this.saveTasks();
@@ -76,14 +72,18 @@
 		};
 
 		$scope.saveTasks = function() {
-			var tasks = [];
-			_.each($scope.taskList, function(obj) {
-				tasks.push(_.values(obj));
-			});
-			globalTaskList.save({
-				name: this.taskListName,
-				notCompleted: tasks
-			});
+			if(this.taskListName) {
+				var tasks = [];
+				_.each($scope.taskList, function(obj) {
+					tasks.push(_.values(obj));
+				});
+				globalTaskList.save({
+					name: this.taskListName,
+					notCompleted: tasks
+				});
+			} else {
+				alert("your list must have a name!");
+			}
 		};
 
 		$scope.updateTaskList = function() {
